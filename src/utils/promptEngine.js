@@ -383,8 +383,33 @@ const pickPowerfulSentencePattern = (ageBand, excludeSentence = '') => {
   return randomItem(filtered.length ? filtered : bank)
 }
 
-const narrativeSenseInstruction = (ageBand) =>
-  ageBand === 'middlePrimary' ? 'Include sight and sound detail.' : 'Include sound and touch detail.'
+const NARRATIVE_SENSE_FOCUS_BY_AGE = {
+  middlePrimary: [
+    { instruction: 'Include sight and sound detail.', pairKey: 'sightSound' },
+    { instruction: 'Include sound and touch detail.', pairKey: 'soundTouch' },
+    { instruction: 'Include sight and touch detail.', pairKey: 'sightTouch' },
+  ],
+  upperPrimary: [
+    { instruction: 'Include sight and sound detail.', pairKey: 'sightSound' },
+    { instruction: 'Include sound and touch detail.', pairKey: 'soundTouch' },
+    { instruction: 'Include sight and touch detail.', pairKey: 'sightTouch' },
+  ],
+  lowerSecondary: [
+    { instruction: 'Include sight and sound detail.', pairKey: 'sightSound' },
+    { instruction: 'Include sound and touch detail.', pairKey: 'soundTouch' },
+    { instruction: 'Include sight and touch detail.', pairKey: 'sightTouch' },
+    { instruction: 'Include smell and sound detail.', pairKey: 'smellSound' },
+  ],
+  upperSecondary: [
+    { instruction: 'Include sight and sound detail.', pairKey: 'sightSound' },
+    { instruction: 'Include sound and touch detail.', pairKey: 'soundTouch' },
+    { instruction: 'Include sight and touch detail.', pairKey: 'sightTouch' },
+    { instruction: 'Include smell and sound detail.', pairKey: 'smellSound' },
+  ],
+}
+
+const pickNarrativeSenseFocus = (ageBand) =>
+  randomItem(NARRATIVE_SENSE_FOCUS_BY_AGE[ageBand] || NARRATIVE_SENSE_FOCUS_BY_AGE.lowerSecondary)
 
 const narrativeVerbInstruction = (ageBand) =>
   ageBand === 'middlePrimary' || ageBand === 'upperPrimary' ? 'Use 3 great active verbs.' : 'Use 4 great active verbs.'
@@ -400,7 +425,7 @@ const buildNarrativeJobsEight = ({ ageBand, adjectiveTarget, sentenceStarts, dev
 
   const verbLine = narrativeVerbInstruction(ageBand)
   const adjLine = `Use ${adjectiveTarget.replace(' adjectives', ' describing words')}.`
-  const senseLine = narrativeSenseInstruction(ageBand)
+  const senseFocus = pickNarrativeSenseFocus(ageBand)
   const authorType = pickAuthorSentenceType(ageBand)
   const proPattern = pickPowerfulSentencePattern(ageBand, card1SentenceMatch)
   const selectedDevice = devices[0]?.text || 'Metaphor'
@@ -427,9 +452,9 @@ const buildNarrativeJobsEight = ({ ageBand, adjectiveTarget, sentenceStarts, dev
       conciseExample: pickExampleForJob(adjLine, ageBand),
     },
     {
-      id: `n-5-sense-${ageBand}`,
-      concise: senseLine,
-      conciseExample: pickExampleForJob(senseLine, ageBand),
+      id: `n-5-sense-${ageBand}-${senseFocus.pairKey}`,
+      concise: senseFocus.instruction,
+      conciseExample: pickSensePairExample(ageBand, senseFocus.pairKey),
     },
     {
       id: `n-6-author-${ageBand}-${authorType.name.toLowerCase()}`,
@@ -617,6 +642,11 @@ const SENSE_PAIR_EXAMPLES_BY_AGE = {
       'Sight: Long shadows stretched across the path. Sound: A whistle cut through the dark.',
       'Sight: Mist curled around the fence. Sound: The gate groaned open.',
     ],
+    sightTouch: [
+      'Sight: Lightning forked once beyond the ridge. Touch: Hail stung my cheeks and collar.',
+      'Sight: The tunnel mouth gaped black ahead. Touch: Cold stone scraped my knuckles.',
+      'Sight: Fireflies blinked along the fence line. Touch: Damp grass soaked through my socks.',
+    ],
   },
   upperPrimary: {
     soundTouch: [
@@ -628,6 +658,11 @@ const SENSE_PAIR_EXAMPLES_BY_AGE = {
       'Sight: Blue light flickered over cracked tiles. Sound: A metal latch snapped shut.',
       'Sight: Steam drifted under the streetlamp. Sound: Footsteps echoed down the lane.',
       'Sight: Moonlight flashed across broken glass. Sound: Sirens faded into the distance.',
+    ],
+    sightTouch: [
+      'Sight: Smoke rolled low across the playing field. Touch: Ash gritted between my teeth.',
+      'Sight: Floodwater lapped at the kerb stones. Touch: My trainers squelched with every step.',
+      'Sight: Frost traced the bus window in feathers. Touch: The glass burned cold against my forehead.',
     ],
   },
   lowerSecondary: {
@@ -641,6 +676,16 @@ const SENSE_PAIR_EXAMPLES_BY_AGE = {
       'Sight: Corridor lights stuttered and failed. Sound: The emergency buzzer stung the air.',
       'Sight: Shadows fractured across the underpass wall. Sound: Tyres hissed on wet asphalt.',
     ],
+    sightTouch: [
+      'Sight: Sparks showered from the damaged junction box. Touch: Vibrations thrummed through the railing into my palms.',
+      'Sight: Rain smeared the platform timetable into coloured blurs. Touch: Wind drove cold through the tear in my jacket.',
+      'Sight: Security tape fluttered in scarlet strips. Touch: Adhesive grit clung to my fingertips after brushing past.',
+    ],
+    smellSound: [
+      'Smell: Diesel and wet concrete filled the stairwell. Sound: Boots hammered upward, two at a time.',
+      'Smell: Burnt sugar hung near the kiosk. Sound: A tinny speaker looped the last-train warning.',
+      'Smell: Ozone bit the air after the surge. Sound: Somewhere, a relay clicked and the hum dropped dead.',
+    ],
   },
   upperSecondary: {
     soundTouch: [
@@ -652,6 +697,16 @@ const SENSE_PAIR_EXAMPLES_BY_AGE = {
       'Sight: Sodium light bled across rain-polished asphalt. Sound: A distant siren drifted through the lane.',
       'Sight: Dust drifted in the beam like static. Sound: The lock clicked with brutal clarity.',
       'Sight: Window reflections trembled across the corridor. Sound: A low hum thickened the silence.',
+    ],
+    sightTouch: [
+      'Sight: Chromatic aberration bled along the monitor edge. Touch: Static lifted the hairs on my forearms.',
+      'Sight: Shattered safety glass glittered along the mezzanine. Touch: Each step sent a skitter of fragments underfoot.',
+      'Sight: Heat shimmer warped the hangar mouth. Touch: Sweat sealed my shirt to my spine.',
+    ],
+    smellSound: [
+      'Smell: Antiseptic and copper threaded the corridor. Sound: A cart squealed on a warped wheel, then stopped.',
+      'Smell: Hot dust and old varnish rose from the archive boxes. Sound: Pages whispered as someone flipped too fast.',
+      'Smell: Rain on hot asphalt sharpened the air. Sound: Distant thunder folded into the city baseline hum.',
     ],
   },
 }
@@ -741,6 +796,8 @@ const pickExampleForJob = (jobText, ageBand) => {
   if (lowerText.includes('start with a great action sentence')) return pickActionStarterExample(ageBand)
   if (lowerText.includes('sound and touch detail')) return pickSensePairExample(ageBand, 'soundTouch')
   if (lowerText.includes('sight and sound detail')) return pickSensePairExample(ageBand, 'sightSound')
+  if (lowerText.includes('sight and touch detail')) return pickSensePairExample(ageBand, 'sightTouch')
+  if (lowerText.includes('smell and sound detail')) return pickSensePairExample(ageBand, 'smellSound')
   if (lowerText.includes('sensory') || lowerText.includes('smell') || lowerText.includes('feeling')) {
     return pickSensoryExample(ageBand)
   }
@@ -884,11 +941,12 @@ export const remixJobCard = ({ currentOutput, mode, ageBand, banks = DEFAULT_CON
         conciseExample: pickExampleForJob(adjLine, ageBand),
       }
     } else if (cardIndex === 4) {
-      const senseLine = narrativeSenseInstruction(ageBand)
+      const senseFocus = pickNarrativeSenseFocus(ageBand)
       nextJobs[cardIndex] = {
         ...current,
-        concise: senseLine,
-        conciseExample: pickExampleForJob(senseLine, ageBand),
+        id: `n-5-sense-${ageBand}-${senseFocus.pairKey}`,
+        concise: senseFocus.instruction,
+        conciseExample: pickSensePairExample(ageBand, senseFocus.pairKey),
       }
     } else if (cardIndex === 5) {
       const authorType = pickAuthorSentenceType(ageBand)
