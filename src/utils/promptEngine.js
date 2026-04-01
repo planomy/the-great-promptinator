@@ -276,12 +276,12 @@ const SIMPLE_FALLBACK_JOBS = {
 
 const BLUE_PROFESSIONAL_SENTENCE_BANK = {
   middlePrimary: [
-    { name: 'Triple Punchers', sentence: 'The door creaked open. Slow. Deliberate. Terrifying.' },
-    { name: 'Triple Where', sentence: 'Over the hills, under the stars, and through the whispering winds came a lone wolf, silent and swift.' },
+    { name: 'Triple Punchers', sentence: 'Click. Slow scrape. Then the handle turned without a sound.' },
+    { name: 'Triple Where', sentence: 'Beyond the fence, under bruised clouds, through knee-high grass, footprints reappeared where none should be.' },
   ],
   upperPrimary: [
-    { name: 'Nested Who', sentence: 'The old man, who spent his days by the river where he had once found a rare gem, smiled at memories only he knew.' },
-    { name: 'Triple When', sentence: 'Following the speech, prior to the applause, amidst a wave of uncertainty, he made his decision.' },
+    { name: 'Nested Who', sentence: 'Rosa, who had sworn never to return to the docks, froze when the horn sounded twice.' },
+    { name: 'Triple When', sentence: 'After the bell, before anyone moved, during the hush that followed, Mateo made his choice.' },
   ],
   lowerSecondary: [
     { name: 'Dual Perspective', sentence: 'From above, the city sparkled like a jewel; from below, it throbbed with the ceaseless energy of survival.' },
@@ -332,6 +332,126 @@ const pickActionStarterExample = (ageBand) => {
   const patternBank = ACTION_SENTENCE_PATTERN_BANK[ageBand] || ACTION_SENTENCE_PATTERN_BANK.lowerSecondary
   const chosen = randomItem(patternBank)
   return `${chosen.name}: ${chosen.sentence}`
+}
+
+const pickNonTntActionPattern = (ageBand) => {
+  const patternBank = ACTION_SENTENCE_PATTERN_BANK[ageBand] || ACTION_SENTENCE_PATTERN_BANK.lowerSecondary
+  const nonTnt = patternBank.filter((pattern) => pattern.name !== 'TNT')
+  return randomItem(nonTnt.length ? nonTnt : patternBank)
+}
+
+const AUTHOR_SENTENCE_TYPE_BANK = {
+  middlePrimary: [
+    { name: 'Description', sentence: 'Along the muddy path, ferns brushed the boots and pebbles glittered with frost.' },
+    { name: 'Thinking', sentence: 'Counting each crack in the planks, Kiri wondered whether the bridge would hold.' },
+    { name: 'Feeling', sentence: 'A tight knot in the stomach made Kiri slow down near the river bend.' },
+    { name: 'Story', sentence: 'Last winter, a torn ribbon had snagged on this same fence post.' },
+    { name: 'Atmosphere', sentence: 'Around the clearing, crows argued overhead and wind rattled loose tin on the shed.' },
+  ],
+  upperPrimary: [
+    { name: 'Description', sentence: 'Across the playground fence, sodium light pooled on puddles and turned the asphalt silver.' },
+    { name: 'Thinking', sentence: 'Weighing whether to run or hide, Mateo tracked every shadow between the goalposts.' },
+    { name: 'Feeling', sentence: 'Adrenaline buzzed under Mateo\'s ribs as the corridor lights flickered twice.' },
+    { name: 'Story', sentence: 'Two days earlier, a cryptic message had appeared on the equipment-room door.' },
+    { name: 'Atmosphere', sentence: 'Beyond the windows, thunder rolled closer while rain hammered the roof in waves.' },
+  ],
+  lowerSecondary: [
+    { name: 'Description', sentence: 'Across the underpass, broken signs flickered and painted the wet concrete blue.' },
+    { name: 'Thinking', sentence: 'Wondering whether the warning was real, Ari counted the exits before moving.' },
+    { name: 'Feeling', sentence: 'Breathing through the panic, Ari forced steady steps toward the stairwell.' },
+    { name: 'Story', sentence: 'Minutes earlier, a torn map fell from the envelope, and every marked tunnel suddenly mattered.' },
+    { name: 'Atmosphere', sentence: 'Beyond the shutters, alarms pulsed, radios crackled, and sirens folded into the rain.' },
+  ],
+  upperSecondary: [
+    { name: 'Description', sentence: 'Along the concourse edge, fractured glass and sodium glare turned the floor into a trembling mirror.' },
+    { name: 'Thinking', sentence: 'Calculating the risk of each doorway, Nia tracked guard movement before committing to the narrow corridor.' },
+    { name: 'Feeling', sentence: 'Caught between urgency and dread, Nia tightened her grip and stepped into the blackout stairwell.' },
+    { name: 'Story', sentence: 'Hours before the first alarm, a misfiled report had flagged this exact corridor as the likely breach point.' },
+    { name: 'Atmosphere', sentence: 'Around the checkpoint, floodlights swept the smoke while loudspeakers fractured the crowd into tense silence.' },
+  ],
+}
+
+const pickAuthorSentenceType = (ageBand) => {
+  const bank = AUTHOR_SENTENCE_TYPE_BANK[ageBand] || AUTHOR_SENTENCE_TYPE_BANK.upperSecondary
+  return randomItem(bank)
+}
+
+const pickPowerfulSentencePattern = (ageBand, excludeSentence = '') => {
+  const bank = BLUE_PROFESSIONAL_SENTENCE_BANK[ageBand] || BLUE_PROFESSIONAL_SENTENCE_BANK.lowerSecondary
+  if (!excludeSentence) return randomItem(bank)
+  const filtered = bank.filter((p) => p.sentence.trim() !== excludeSentence.trim())
+  return randomItem(filtered.length ? filtered : bank)
+}
+
+const narrativeSenseInstruction = (ageBand) =>
+  ageBand === 'middlePrimary' ? 'Include sight and sound detail.' : 'Include sound and touch detail.'
+
+const narrativeVerbInstruction = (ageBand) =>
+  ageBand === 'middlePrimary' || ageBand === 'upperPrimary' ? 'Use 3 great active verbs.' : 'Use 4 great active verbs.'
+
+const buildNarrativeJobsEight = ({ ageBand, adjectiveTarget, sentenceStarts, devices }) => {
+  const startText = getStartCardInstruction()
+  const card1Example = pickExampleForJob(startText, ageBand)
+  const card1SentenceMatch = card1Example.includes(': ') ? card1Example.split(': ').slice(1).join(': ').trim() : card1Example
+
+  const [firstStart, secondStart] = pickTwoDifferentStarterTypes(
+    sentenceStarts.length ? sentenceStarts : ['Without warning,', 'From beyond the gate,'],
+  )
+
+  const verbLine = narrativeVerbInstruction(ageBand)
+  const adjLine = `Use ${adjectiveTarget.replace(' adjectives', ' describing words')}.`
+  const senseLine = narrativeSenseInstruction(ageBand)
+  const authorType = pickAuthorSentenceType(ageBand)
+  const proPattern = pickPowerfulSentencePattern(ageBand, card1SentenceMatch)
+  const selectedDevice = devices[0]?.text || 'Metaphor'
+
+  return [
+    {
+      id: `n-1-action-${ageBand}`,
+      concise: startText,
+      conciseExample: card1Example,
+    },
+    {
+      id: `n-2-starts-${ageBand}`,
+      concise: `Include these 2 starts: "${firstStart}" and "${secondStart}"`,
+      conciseExample: 'Use each start once.',
+    },
+    {
+      id: `n-3-verbs-${ageBand}`,
+      concise: verbLine,
+      conciseExample: pickExampleForJob(verbLine, ageBand),
+    },
+    {
+      id: `n-4-adj-${ageBand}`,
+      concise: adjLine,
+      conciseExample: pickExampleForJob(adjLine, ageBand),
+    },
+    {
+      id: `n-5-sense-${ageBand}`,
+      concise: senseLine,
+      conciseExample: pickExampleForJob(senseLine, ageBand),
+    },
+    {
+      id: `n-6-author-${ageBand}-${authorType.name.toLowerCase()}`,
+      concise: `Use a ${authorType.name} sentence.`,
+      conciseExample: authorType.sentence,
+    },
+    {
+      id: `n-7-power-${ageBand}-${proPattern.name.replace(/\s+/g, '-').toLowerCase()}`,
+      concise: `Use a ${proPattern.name} sentence (powerful craft).`,
+      conciseExample: proPattern.sentence,
+    },
+    {
+      id: `n-8-device-${selectedDevice}`,
+      concise: `Use this device: ${selectedDevice}.`,
+      conciseExample: DEVICE_EXAMPLES[selectedDevice] || 'Use it once, clearly.',
+    },
+  ]
+}
+
+const isStarterListInstruction = (text) => {
+  const lower = text.toLowerCase()
+  return lower.includes('sentence starter') || lower.includes('starts from the list')
 }
 
 const DEVICE_EXAMPLES = {
@@ -485,6 +605,63 @@ const pickSensoryExample = (ageBand) => {
   return randomItem(bank)
 }
 
+const SENSE_PAIR_EXAMPLES_BY_AGE = {
+  middlePrimary: {
+    soundTouch: [
+      'Sound: Leaves hissed above us. Touch: Wet rope burned my palm.',
+      'Sound: The latch clicked twice. Touch: The cold handle stuck to my fingers.',
+      'Sound: Boots thumped on the boards. Touch: Splinters scratched my hand.',
+    ],
+    sightSound: [
+      'Sight: Orange light danced on the wall. Sound: Rain drummed on the roof.',
+      'Sight: Long shadows stretched across the path. Sound: A whistle cut through the dark.',
+      'Sight: Mist curled around the fence. Sound: The gate groaned open.',
+    ],
+  },
+  upperPrimary: {
+    soundTouch: [
+      'Sound: The gate shrieked on rusty hinges. Touch: Grit scraped under my fingernails.',
+      'Sound: A radio crackled in short bursts. Touch: Rain needled my cheeks.',
+      'Sound: Metal chains clanged in the wind. Touch: The railing bit into my palm.',
+    ],
+    sightSound: [
+      'Sight: Blue light flickered over cracked tiles. Sound: A metal latch snapped shut.',
+      'Sight: Steam drifted under the streetlamp. Sound: Footsteps echoed down the lane.',
+      'Sight: Moonlight flashed across broken glass. Sound: Sirens faded into the distance.',
+    ],
+  },
+  lowerSecondary: {
+    soundTouch: [
+      'Sound: Boots hammered up the stairwell. Touch: Rust bit into his palm as he gripped the rail.',
+      'Sound: The alarm pulsed in clipped bursts. Touch: Cold concrete pressed through her sleeve.',
+      'Sound: A chain rattled against the gate. Touch: Damp metal chilled his knuckles.',
+    ],
+    sightSound: [
+      'Sight: Neon reflections shook across oil-dark pavement. Sound: Sirens thinned into the distance.',
+      'Sight: Corridor lights stuttered and failed. Sound: The emergency buzzer stung the air.',
+      'Sight: Shadows fractured across the underpass wall. Sound: Tyres hissed on wet asphalt.',
+    ],
+  },
+  upperSecondary: {
+    soundTouch: [
+      'Sound: A clipped radio hiss split the stairwell. Touch: Damp steel chilled her knuckles.',
+      'Sound: Fluorescent buzz layered over distant alarms. Touch: Glass grit pressed through his gloves.',
+      'Sound: The shutter screamed as it lifted. Touch: Cold rain threaded through her cuffs.',
+    ],
+    sightSound: [
+      'Sight: Sodium light bled across rain-polished asphalt. Sound: A distant siren drifted through the lane.',
+      'Sight: Dust drifted in the beam like static. Sound: The lock clicked with brutal clarity.',
+      'Sight: Window reflections trembled across the corridor. Sound: A low hum thickened the silence.',
+    ],
+  },
+}
+
+const pickSensePairExample = (ageBand, pair) => {
+  const banks = SENSE_PAIR_EXAMPLES_BY_AGE[ageBand] || SENSE_PAIR_EXAMPLES_BY_AGE.lowerSecondary
+  const pool = banks[pair] || []
+  return pool.length ? randomItem(pool) : pickSensoryExample(ageBand)
+}
+
 const pickAdjectiveSamples = (ageBand) => {
   const pool = [...ADJECTIVE_BANKS[ageBand]]
   const picks = []
@@ -516,23 +693,55 @@ const pickTwoDifferent = (items) => {
   return [items[firstIndex], items[secondIndex]]
 }
 
+const classifyStarterType = (starter) => {
+  const text = starter.toLowerCase()
+
+  const timePattern =
+    /\b(in the meantime|meanwhile|later|earlier|before|after|by the time|at first light|at the precise moment|minutes earlier|long before|ever since|when)\b/
+  if (timePattern.test(text)) return 'time'
+
+  const placePattern = /\b(under|over|beyond|behind|inside|outside|beneath|across|through|at the|from)\b/
+  if (placePattern.test(text)) return 'place'
+
+  const contrastPattern = /\b(even though|although|however|despite|while)\b/
+  if (contrastPattern.test(text)) return 'contrast'
+
+  return 'other'
+}
+
+const pickTwoDifferentStarterTypes = (starts) => {
+  if (!starts.length) return ['', '']
+  if (starts.length === 1) return [starts[0], starts[0]]
+
+  const grouped = new Map()
+  starts.forEach((start) => {
+    const type = classifyStarterType(start)
+    if (!grouped.has(type)) grouped.set(type, [])
+    grouped.get(type).push(start)
+  })
+
+  const categories = [...grouped.keys()]
+  if (categories.length >= 2) {
+    const firstCategory = randomItem(categories)
+    const otherCategories = categories.filter((category) => category !== firstCategory)
+    const secondCategory = randomItem(otherCategories)
+    return [randomItem(grouped.get(firstCategory)), randomItem(grouped.get(secondCategory))]
+  }
+
+  return pickTwoDifferent(starts)
+}
+
 const pickExampleForJob = (jobText, ageBand) => {
   const lowerText = jobText.toLowerCase()
   if (lowerText.includes('describing words')) return pickAdjectiveSamples(ageBand)
-  if (lowerText.includes('4 great active verbs')) return pickVerbSamples(ageBand, 4)
-  if (lowerText.includes('3 great active verbs')) return pickVerbSamples(ageBand, 3)
-  if (lowerText.includes('active verbs')) return pickVerbSamples(ageBand, 4)
+  if (lowerText.includes('4 great active verbs')) return pickVerbSamples(ageBand, 8)
+  if (lowerText.includes('3 great active verbs')) return pickVerbSamples(ageBand, 8)
+  if (lowerText.includes('active verbs')) return pickVerbSamples(ageBand, 8)
   if (lowerText.includes('zero was/were')) return pickVerbSamples(ageBand, 4)
   if (lowerText.includes('start with a great action sentence')) return pickActionStarterExample(ageBand)
-  if (
-    lowerText.includes('sound and touch detail') ||
-    lowerText.includes('sight and sound detail') ||
-    lowerText.includes('sensory') ||
-    lowerText.includes('sound') ||
-    lowerText.includes('touch') ||
-    lowerText.includes('smell') ||
-    lowerText.includes('feeling')
-  ) {
+  if (lowerText.includes('sound and touch detail')) return pickSensePairExample(ageBand, 'soundTouch')
+  if (lowerText.includes('sight and sound detail')) return pickSensePairExample(ageBand, 'sightSound')
+  if (lowerText.includes('sensory') || lowerText.includes('smell') || lowerText.includes('feeling')) {
     return pickSensoryExample(ageBand)
   }
 
@@ -553,6 +762,8 @@ const ensureSimpleJobs = ({ jobs, mode, adjectiveTarget, ageBand }) => {
   const converted = jobs
     .map((job) => conciseInstruction(job, adjectiveTarget, mode, ageBand))
     .filter((text) => !text.toLowerCase().includes('metaphor and 1 synecdoche') && text !== forcedStart)
+    .filter((text) => !(mode === 'narrative' && text.toLowerCase().includes('tnt sentence')))
+    .filter((text) => !isStarterListInstruction(text))
   const pool = SIMPLE_FALLBACK_JOBS[mode][ageBand]
   const unique = []
   const seen = new Set()
@@ -568,7 +779,13 @@ const ensureSimpleJobs = ({ jobs, mode, adjectiveTarget, ageBand }) => {
   })
 
   pool.forEach((text) => {
-    if (unique.length < 5 && !seen.has(text) && !text.toLowerCase().includes('metaphor and 1 synecdoche')) {
+    if (
+      unique.length < 5 &&
+      !seen.has(text) &&
+      !text.toLowerCase().includes('metaphor and 1 synecdoche') &&
+      !(mode === 'narrative' && text.toLowerCase().includes('tnt sentence')) &&
+      !isStarterListInstruction(text)
+    ) {
       seen.add(text)
       unique.push(text)
     }
@@ -583,7 +800,7 @@ const ensureSimpleJobs = ({ jobs, mode, adjectiveTarget, ageBand }) => {
 
 const buildForcedCards789 = ({ ageBand, devices, sentenceStarts }) => {
   const selectedDevice = devices[0]?.text || 'Metaphor'
-  const [firstStart, secondStart] = pickTwoDifferent(
+  const [firstStart, secondStart] = pickTwoDifferentStarterTypes(
     sentenceStarts.length ? sentenceStarts : ['Without warning,', 'From beyond the gate,'],
   )
   const proPattern = randomItem(BLUE_PROFESSIONAL_SENTENCE_BANK[ageBand] || BLUE_PROFESSIONAL_SENTENCE_BANK.lowerSecondary)
@@ -609,29 +826,7 @@ const buildForcedCards789 = ({ ageBand, devices, sentenceStarts }) => {
 
 const buildForcedCards789ForMode = ({ mode, ageBand, devices, sentenceStarts }) => {
   if (mode === 'narrative') {
-    const selectedDevice = devices[0]?.text || 'Metaphor'
-    const [firstStart, secondStart] = pickTwoDifferent(
-      sentenceStarts.length ? sentenceStarts : ['Without warning,', 'From beyond the gate,'],
-    )
-    const actionPattern = randomItem(ACTION_SENTENCE_PATTERN_BANK[ageBand] || ACTION_SENTENCE_PATTERN_BANK.lowerSecondary)
-
-    return [
-      {
-        id: `forced-6-action-${ageBand}`,
-        concise: `Use a ${actionPattern.name} sentence.`,
-        conciseExample: actionPattern.sentence,
-      },
-      {
-        id: `forced-7-starts-${ageBand}`,
-        concise: `Include these 2 starts: "${firstStart}" and "${secondStart}"`,
-        conciseExample: 'Use each start once.',
-      },
-      {
-        id: `forced-8-device-${selectedDevice}`,
-        concise: `Use this device: ${selectedDevice}.`,
-        conciseExample: DEVICE_EXAMPLES[selectedDevice] || 'Use it once, clearly.',
-      },
-    ]
+    return []
   }
   return buildForcedCards789({ ageBand, devices, sentenceStarts })
 }
@@ -652,6 +847,78 @@ export const remixJobCard = ({ currentOutput, mode, ageBand, banks = DEFAULT_CON
 
   const corePool = SIMPLE_FALLBACK_JOBS[mode][ageBand]
 
+  if (mode === 'narrative' && nextJobs.length >= 8) {
+    const startText = getStartCardInstruction()
+    const card1Ex = nextJobs[0]?.conciseExample || ''
+    const card1SentenceMatch = card1Ex.includes(': ') ? card1Ex.split(': ').slice(1).join(': ').trim() : card1Ex
+
+    if (cardIndex === 0) {
+      nextJobs[cardIndex] = {
+        ...current,
+        concise: startText,
+        conciseExample: pickExampleForJob(startText, ageBand),
+      }
+    } else if (cardIndex === 1) {
+      const starts = banks.sentenceStarterBanks[mode][ageBand].map((entry) => entry.text)
+      const [firstStart, secondStart] = pickTwoDifferentStarterTypes(
+        starts.length ? starts : ['Without warning,', 'From beyond the gate,'],
+      )
+      nextJobs[cardIndex] = {
+        ...current,
+        concise: `Include these 2 starts: "${firstStart}" and "${secondStart}"`,
+        conciseExample: 'Use each start once.',
+      }
+    } else if (cardIndex === 2) {
+      const verbLine = narrativeVerbInstruction(ageBand)
+      nextJobs[cardIndex] = {
+        ...current,
+        concise: verbLine,
+        conciseExample: pickExampleForJob(verbLine, ageBand),
+      }
+    } else if (cardIndex === 3) {
+      const ageMeta = AGE_BANDS.find((b) => b.id === ageBand)
+      const adjLine = `Use ${(ageMeta?.adjectives || '10-12 adjectives').replace(' adjectives', ' describing words')}.`
+      nextJobs[cardIndex] = {
+        ...current,
+        concise: adjLine,
+        conciseExample: pickExampleForJob(adjLine, ageBand),
+      }
+    } else if (cardIndex === 4) {
+      const senseLine = narrativeSenseInstruction(ageBand)
+      nextJobs[cardIndex] = {
+        ...current,
+        concise: senseLine,
+        conciseExample: pickExampleForJob(senseLine, ageBand),
+      }
+    } else if (cardIndex === 5) {
+      const authorType = pickAuthorSentenceType(ageBand)
+      nextJobs[cardIndex] = {
+        ...current,
+        id: `n-6-author-${ageBand}-${authorType.name.toLowerCase()}`,
+        concise: `Use a ${authorType.name} sentence.`,
+        conciseExample: authorType.sentence,
+      }
+    } else if (cardIndex === 6) {
+      const proPattern = pickPowerfulSentencePattern(ageBand, card1SentenceMatch)
+      nextJobs[cardIndex] = {
+        ...current,
+        id: `n-7-power-${ageBand}-${proPattern.name.replace(/\s+/g, '-').toLowerCase()}`,
+        concise: `Use a ${proPattern.name} sentence (powerful craft).`,
+        conciseExample: proPattern.sentence,
+      }
+    } else if (cardIndex === 7) {
+      const deviceBank = banks.deviceBanks[mode][ageBand].map((entry) => entry.text)
+      const selectedDevice = randomItem(deviceBank) || 'Metaphor'
+      nextJobs[cardIndex] = {
+        ...current,
+        id: `n-8-device-${selectedDevice}`,
+        concise: `Use this device: ${selectedDevice}.`,
+        conciseExample: DEVICE_EXAMPLES[selectedDevice] || 'Use it once, clearly.',
+      }
+    }
+    return { ...currentOutput, jobs: nextJobs }
+  }
+
   if (cardIndex === 0) {
     const startText = getStartCardInstruction(mode)
     nextJobs[cardIndex] = {
@@ -665,7 +932,8 @@ export const remixJobCard = ({ currentOutput, mode, ageBand, banks = DEFAULT_CON
       (text) =>
         text !== current.concise &&
         !usedByOthers.has(text) &&
-        !text.toLowerCase().includes('metaphor and 1 synecdoche'),
+        !text.toLowerCase().includes('metaphor and 1 synecdoche') &&
+        !isStarterListInstruction(text),
     )
     const picked = choices.length ? randomItem(choices) : current.concise
     nextJobs[cardIndex] = {
@@ -675,7 +943,7 @@ export const remixJobCard = ({ currentOutput, mode, ageBand, banks = DEFAULT_CON
     }
   } else if (cardIndex === 5) {
     if (mode === 'narrative') {
-      const actionPattern = randomItem(ACTION_SENTENCE_PATTERN_BANK[ageBand] || ACTION_SENTENCE_PATTERN_BANK.lowerSecondary)
+      const actionPattern = pickNonTntActionPattern(ageBand)
       nextJobs[cardIndex] = {
         ...current,
         concise: `Use a ${actionPattern.name} sentence.`,
@@ -691,7 +959,9 @@ export const remixJobCard = ({ currentOutput, mode, ageBand, banks = DEFAULT_CON
     }
   } else if (cardIndex === 6) {
     const starts = banks.sentenceStarterBanks[mode][ageBand].map((entry) => entry.text)
-    const [firstStart, secondStart] = pickTwoDifferent(starts.length ? starts : ['Without warning,', 'From beyond the gate,'])
+    const [firstStart, secondStart] = pickTwoDifferentStarterTypes(
+      starts.length ? starts : ['Without warning,', 'From beyond the gate,'],
+    )
     nextJobs[cardIndex] = {
       ...current,
       concise: `Include these 2 starts: "${firstStart}" and "${secondStart}"`,
@@ -725,14 +995,24 @@ export const generatePrompt = ({ mode, ageBand, autoTask, customTask, variationM
   const devices = pickDevices({ mode, ageBand, recentDeviceIds: history.recentDeviceIds, banks })
   const ageMeta = AGE_BANDS.find((band) => band.id === ageBand)
 
-  const simpleCoreJobs = ensureSimpleJobs({ jobs, mode, adjectiveTarget: ageMeta.adjectives, ageBand })
-  const forcedCards = buildForcedCards789ForMode({
-    mode,
-    ageBand,
-    devices,
-    sentenceStarts: sentenceContent.sentenceStarts,
-  })
-  const simpleJobs = [...simpleCoreJobs, ...forcedCards]
+  let simpleJobs
+  if (mode === 'narrative') {
+    simpleJobs = buildNarrativeJobsEight({
+      ageBand,
+      adjectiveTarget: ageMeta.adjectives,
+      sentenceStarts: sentenceContent.sentenceStarts,
+      devices,
+    })
+  } else {
+    const simpleCoreJobs = ensureSimpleJobs({ jobs, mode, adjectiveTarget: ageMeta.adjectives, ageBand })
+    const forcedCards = buildForcedCards789ForMode({
+      mode,
+      ageBand,
+      devices,
+      sentenceStarts: sentenceContent.sentenceStarts,
+    })
+    simpleJobs = [...simpleCoreJobs, ...forcedCards]
+  }
   const simpleJobComboSignature = simpleJobs.map((job) => job.id).join('|')
 
   const nextHistory = {
