@@ -9,7 +9,7 @@ export function JobsCard({ jobs, projector, compact = false, grow = false, tone 
           card: 'relative rounded-xl border border-slate-700/95 bg-[linear-gradient(180deg,rgba(30,58,138,0.28)_0%,rgba(15,23,42,0.95)_100%)] p-3 shadow-[inset_0_1px_0_0_rgba(147,197,253,0.08)]',
           badge:
             'shrink-0 rounded-full border border-slate-600/90 bg-blue-950/70 text-[17px] font-semibold tabular-nums text-white shadow-[inset_0_1px_0_0_rgba(147,197,253,0.12)] transition hover:border-slate-500/90',
-          example: 'text-lg font-medium leading-snug text-sky-200/95 md:text-xl md:text-2xl',
+          example: 'text-[20px] font-medium leading-snug text-sky-200/95 md:text-[26px]',
           desc: 'text-blue-100/90',
           exampleLine: 'text-blue-200/85',
         }
@@ -20,7 +20,7 @@ export function JobsCard({ jobs, projector, compact = false, grow = false, tone 
           card: 'relative rounded-xl border border-emerald-500/45 bg-[linear-gradient(180deg,rgba(6,95,70,0.42)_0%,rgba(4,120,87,0.18)_100%)] p-3 shadow-[inset_0_1px_0_0_rgba(110,231,183,0.11)]',
           badge:
             'shrink-0 rounded-full border border-emerald-500/42 bg-emerald-900/65 text-[17px] font-semibold tabular-nums text-white shadow-[inset_0_1px_0_0_rgba(167,243,208,0.15)] transition hover:border-emerald-400/55',
-          example: 'text-lg font-medium leading-snug text-emerald-100/95 md:text-xl md:text-2xl',
+          example: 'text-[20px] font-medium leading-snug text-emerald-100/95 md:text-[26px]',
           desc: 'text-emerald-100',
           exampleLine: 'text-emerald-200/85',
         }
