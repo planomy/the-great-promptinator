@@ -336,8 +336,15 @@ const pickActionStarterExample = (ageBand) => {
 
 const DEVICE_EXAMPLES = {
   'Short sentence for impact': 'One breath. Then chaos.',
+  Simile: 'Like a wire pulled tight, the silence hummed before the door burst open.',
   Metaphor: 'Fear was a drumbeat behind his ribs.',
+  Imagery: 'Blue light trembled across wet asphalt and broken glass.',
+  Personification: 'Wind clawed at the shutters and refused to let the room settle.',
+  Polysyndeton: 'She checked the lock and counted the steps and listened for movement.',
+  Asyndeton: 'No signal, no witness, no way out.',
   Synecdoche: 'A wall of eyes locked on the doorway.',
+  Hyperbole: 'That pause stretched for a lifetime.',
+  Contrast: 'Outside, alarms screamed; inside, his voice dropped to a whisper.',
   'Rule of three': 'Cold. Silent. Waiting.',
   'Extended metaphor': 'Panic kept tightening like a knot around his lungs.',
   'Em dash detail': 'Rusted and bent, the gate groaned open.',

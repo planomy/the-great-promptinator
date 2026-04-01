@@ -62,10 +62,10 @@ export const SENTENCE_STARTER_BANKS = {
 
 export const DEVICE_BANKS = {
   narrative: {
-    middlePrimary: makeEntries('d-n-mp', ['Short sentence for impact', 'Alliteration', 'Onomatopoeia', 'Rule of three']),
-    upperPrimary: makeEntries('d-n-up', ['Metaphor', 'Sensory pair', 'Em dash detail', 'Rule of three']),
-    lowerSecondary: makeEntries('d-n-ls', ['Symbolic detail', 'Extended metaphor', 'Controlled repetition', 'Em dash insert']),
-    upperSecondary: makeEntries('d-n-us', ['Motif', 'Juxtaposition', 'Strategic sentence fragment', 'Embedded clause']),
+    middlePrimary: makeEntries('d-n-mp', ['Simile', 'Metaphor', 'Imagery', 'Personification', 'Polysyndeton', 'Asyndeton', 'Synecdoche', 'Hyperbole', 'Alliteration', 'Contrast']),
+    upperPrimary: makeEntries('d-n-up', ['Simile', 'Metaphor', 'Imagery', 'Personification', 'Polysyndeton', 'Asyndeton', 'Synecdoche', 'Hyperbole', 'Alliteration', 'Contrast']),
+    lowerSecondary: makeEntries('d-n-ls', ['Simile', 'Metaphor', 'Imagery', 'Personification', 'Polysyndeton', 'Asyndeton', 'Synecdoche', 'Hyperbole', 'Alliteration', 'Contrast']),
+    upperSecondary: makeEntries('d-n-us', ['Simile', 'Metaphor', 'Imagery', 'Personification', 'Polysyndeton', 'Asyndeton', 'Synecdoche', 'Hyperbole', 'Alliteration', 'Contrast']),
   },
   persuasive: {
     middlePrimary: makeEntries('d-p-mp', ['Rhetorical question', 'Rule of three', 'Direct address', 'Call to action']),
