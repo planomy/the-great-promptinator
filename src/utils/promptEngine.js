@@ -453,6 +453,34 @@ const JOB_EXAMPLES = {
   'Zero was/were.': ['Use clawed not was clawing.', 'Use echoed not was loud.'],
 }
 
+const SENSORY_EXAMPLES_BY_AGE = {
+  middlePrimary: [
+    'Sight: Orange torchlight bounced off wet stones. Sound: Drip, drip from the tunnel roof. Feeling: My chest felt tight.',
+    'Sound: Leaves hissed in the wind. Touch: The rope burned my palm. Smell: Smoke drifted through the lane.',
+    'Sight: Shadows stretched across the path. Touch: Cold mud soaked my shoes. Feeling: I felt a jump of panic.',
+  ],
+  upperPrimary: [
+    'Sight: Blue light flickered over cracked tiles. Sound: A metal latch clicked behind me. Feeling: My stomach dropped.',
+    'Sound: The gate shrieked against the hinges. Touch: Splinters scraped my fingertips. Smell: Damp wood filled the shed.',
+    'Sight: Steam curled around the streetlamp. Touch: Rain needled my face. Feeling: A knot of fear tightened in my throat.',
+  ],
+  lowerSecondary: [
+    'Sight: Neon reflections shook across oil-dark pavement. Sound: Sirens thinned into the distance. Feeling: A surge of dread hit hard.',
+    'Sound: Boots thudded up the stairwell. Touch: Rust bit into his palm as he grabbed the rail. Smell: Petrol stung the air.',
+    'Sight: The corridor lights stuttered and died. Touch: Cold concrete pressed through her sleeve. Feeling: Her pulse kicked into overdrive.',
+  ],
+  upperSecondary: [
+    'Sight: Sodium light bled across rain-polished asphalt. Sound: A clipped radio hiss fractured the silence. Feeling: Controlled panic sharpened each decision.',
+    'Sound: Fluorescent buzz layered over distant alarms. Touch: Damp metal chilled his knuckles. Smell: Burnt plastic lingered in the stairwell.',
+    'Sight: Dust drifted through the beam like static. Touch: Glass grit ground under her boot. Feeling: A precise, rising urgency took hold.',
+  ],
+}
+
+const pickSensoryExample = (ageBand) => {
+  const bank = SENSORY_EXAMPLES_BY_AGE[ageBand] || SENSORY_EXAMPLES_BY_AGE.lowerSecondary
+  return randomItem(bank)
+}
+
 const pickAdjectiveSamples = (ageBand) => {
   const pool = [...ADJECTIVE_BANKS[ageBand]]
   const picks = []
@@ -485,17 +513,29 @@ const pickTwoDifferent = (items) => {
 }
 
 const pickExampleForJob = (jobText, ageBand) => {
-  if (jobText.toLowerCase().includes('describing words')) return pickAdjectiveSamples(ageBand)
-  if (jobText.toLowerCase().includes('4 great active verbs')) return pickVerbSamples(ageBand, 4)
-  if (jobText.toLowerCase().includes('3 great active verbs')) return pickVerbSamples(ageBand, 3)
-  if (jobText.toLowerCase().includes('active verbs')) return pickVerbSamples(ageBand, 4)
-  if (jobText.toLowerCase().includes('zero was/were')) return pickVerbSamples(ageBand, 4)
-  if (jobText.toLowerCase().includes('start with a great action sentence')) return pickActionStarterExample(ageBand)
+  const lowerText = jobText.toLowerCase()
+  if (lowerText.includes('describing words')) return pickAdjectiveSamples(ageBand)
+  if (lowerText.includes('4 great active verbs')) return pickVerbSamples(ageBand, 4)
+  if (lowerText.includes('3 great active verbs')) return pickVerbSamples(ageBand, 3)
+  if (lowerText.includes('active verbs')) return pickVerbSamples(ageBand, 4)
+  if (lowerText.includes('zero was/were')) return pickVerbSamples(ageBand, 4)
+  if (lowerText.includes('start with a great action sentence')) return pickActionStarterExample(ageBand)
+  if (
+    lowerText.includes('sound and touch detail') ||
+    lowerText.includes('sight and sound detail') ||
+    lowerText.includes('sensory') ||
+    lowerText.includes('sound') ||
+    lowerText.includes('touch') ||
+    lowerText.includes('smell') ||
+    lowerText.includes('feeling')
+  ) {
+    return pickSensoryExample(ageBand)
+  }
 
   const bank = JOB_EXAMPLES[jobText]
   if (bank?.length) return randomItem(bank)
 
-  const lower = jobText.toLowerCase()
+  const lower = lowerText
   if (lower.includes('start')) return pickActionStarterExample(ageBand)
   if (lower.includes('mood')) return 'A bitter wind scraped across the empty street.'
   if (lower.includes('device')) return 'Metaphor: Fear was a drumbeat.'
