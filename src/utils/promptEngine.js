@@ -296,7 +296,7 @@ const BLUE_PROFESSIONAL_SENTENCE_BANK = {
 const ACTION_SENTENCE_PATTERN_BANK = {
   middlePrimary: [
     { name: 'Verb Start', sentence: 'Racing to the gate, Maya gripped the cold handle and pushed it open.' },
-    { name: 'Quadruple Verb', sentence: 'Leo darted, grabbed, lifted, and shoved the heavy box behind the curtain.' },
+    { name: 'Quadruple Verb', sentence: 'Racing along the fence line, Leo grabbed the rope, lifted the crate, and shoved it behind the curtain.' },
     { name: 'Injected Verb', sentence: 'Climbing the stairs, hearing floorboards creak beneath her shoes, Ava paused at the top.' },
     { name: 'Double Hand Sentence', sentence: 'With a torch in one hand and a crumpled map in the other, Sam stepped into the tunnel.' },
     { name: 'Double Issue Verb Start', sentence: 'Maya, battling the rain and shaking from fear, pushed the gate and slipped inside.' },
@@ -304,7 +304,7 @@ const ACTION_SENTENCE_PATTERN_BANK = {
   ],
   upperPrimary: [
     { name: 'Verb Start', sentence: 'Approaching the door, Ellie traced the carved symbols with a shaking fingertip.' },
-    { name: 'Quadruple Verb', sentence: 'Ellie checked the lock, lifted the latch, and scanned the harbour below.' },
+    { name: 'Quadruple Verb', sentence: 'Climbing the spiral staircase, Ellie checked the lock, lifted the latch, and scanned the harbour below.' },
     { name: 'Injected Verb', sentence: 'Descending the stairs, feeling the storm press against the walls, she hesitated at the final step.' },
     { name: 'Double Hand Sentence', sentence: 'With a rusted key in one hand and a flickering torch in the other, he edged toward the hidden hatch.' },
     { name: 'Double Issue Verb Start', sentence: 'Ellie, battling fierce wind and choking smoke, shoved the latch and ran for cover.' },
@@ -312,7 +312,7 @@ const ACTION_SENTENCE_PATTERN_BANK = {
   ],
   lowerSecondary: [
     { name: 'Verb Start', sentence: 'Crossing the platform, he traced the graffiti-marked railing and counted the seconds under his breath.' },
-    { name: 'Quadruple Verb', sentence: 'He pivoted, gripped, braced, and dragged the jammed gate until the hinges screamed open.' },
+    { name: 'Quadruple Verb', sentence: 'Crossing the shattered platform, he gripped the rail, braced his shoulder, and dragged the jammed gate open.' },
     { name: 'Injected Verb', sentence: 'Stepping into the passage, sensing the stale air close around him, he fought the urge to turn back.' },
     { name: 'Double Hand Sentence', sentence: 'With his phone torch in one hand and the folded note in the other, he followed the chalk arrows into the underpass.' },
     { name: 'Double Issue Verb Start', sentence: 'Ari, battling panic and dodging shattered glass, forced the side door and sprinted into the lane.' },
@@ -320,7 +320,7 @@ const ACTION_SENTENCE_PATTERN_BANK = {
   ],
   upperSecondary: [
     { name: 'Verb Start', sentence: 'Threading through the wrecked concourse, she mapped each shadowed exit while her pulse kept time with distant alarms.' },
-    { name: 'Quadruple Verb', sentence: 'He recalibrated, tightened, anchored, and launched the makeshift line across the fractured stairwell.' },
+    { name: 'Quadruple Verb', sentence: 'Tracking the falling debris, he recalibrated the line, tightened the harness, and launched the hook across the stairwell.' },
     { name: 'Injected Verb', sentence: 'Moving down the stairwell, feeling the pressure of old panic return, he measured every footstep before committing his weight.' },
     { name: 'Double Hand Sentence', sentence: 'With the decrypted file in one hand and the blood-warm radio in the other, she advanced into the blackout corridor.' },
     { name: 'Double Issue Verb Start', sentence: 'Nia, battling crossfire and fighting tunnel vision, braced the door and drove the team through.' },

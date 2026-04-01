@@ -1,5 +1,16 @@
 const DEVICE_LIBRARY = {
-  narrative: ['Simile', 'Metaphor', 'Imagery', 'Personification', 'Polysyndeton', 'Asyndeton', 'Synecdoche', 'Hyperbole', 'Alliteration', 'Contrast'],
+  narrative: [
+    { label: 'SIMILE', key: 'Simile' },
+    { label: 'METAPHOR', key: 'Metaphor' },
+    { label: 'IMAGERY', key: 'Imagery' },
+    { label: 'PERSONIFY', key: 'Personification' },
+    { label: 'POLYSYND', key: 'Polysyndeton' },
+    { label: 'ASYNDTN', key: 'Asyndeton' },
+    { label: 'SYNECDCH', key: 'Synecdoche' },
+    { label: 'HYPERBLE', key: 'Hyperbole' },
+    { label: 'ALLITERAT', key: 'Alliteration' },
+    { label: 'CONTRAST', key: 'Contrast' },
+  ],
   persuasive: ['Rhetorical question', 'Direct address', 'Rule of three', 'Repetition', 'Contrast', 'Call to action', 'Modal verbs', 'Counterpoint'],
   analytical: ['Evaluative qualifier', 'Interpretive hedge', 'Analytical connective', 'Authorial intent phrase', 'Micro quote integration', 'Embedded quote'],
 }
@@ -7,7 +18,7 @@ const DEVICE_LIBRARY = {
 const DEVICE_EXAMPLES_BY_AGE = {
   middlePrimary: {
     Simile: 'Like a drumbeat in the dark, the footsteps kept getting closer.',
-    Metaphor: 'Fear was a buzzing bee in Mia chest.',
+    Metaphor: 'Fear buzzed like a bee in Mia\'s chest.',
     Imagery: 'Orange light spilled across the puddles and made the street glow.',
     Personification: 'Wind tugged at the sign as if it wanted to warn us.',
     Polysyndeton: 'He ran and slipped and grabbed and climbed.',
@@ -66,6 +77,8 @@ const DEVICE_ALIASES = {
   Juxtaposition: 'Contrast',
   Motif: 'Imagery',
   'Short sentence for impact': 'Asyndeton',
+  'Sensory pair': 'Imagery',
+  'Symbolic detail': 'Imagery',
   'Direct recommendation': 'Call to action',
   'Concession + rebuttal': 'Counterpoint',
   'Qualified concession': 'Counterpoint',
@@ -94,6 +107,7 @@ const pickExample = (device, ageBand) => {
 export function DevicesCard({ devices, compact = false, mode = 'narrative', ageBand = 'lowerSecondary' }) {
   const featured = compact ? devices.slice(0, 3) : devices
   const focus = DEVICE_LIBRARY[mode] || DEVICE_LIBRARY.narrative
+  const focusItems = focus.map((device) => (typeof device === 'string' ? { label: device.toUpperCase(), key: device } : device))
   const requiredDevices =
     mode === 'narrative'
       ? ['Metaphor', 'Synecdoche']
@@ -108,12 +122,12 @@ export function DevicesCard({ devices, compact = false, mode = 'narrative', ageB
         Include 1 {requiredDevices[0].toLowerCase()} and 1 {requiredDevices[1].toLowerCase()}.
       </p>
       <div className={`mt-3 flex flex-wrap ${compact ? 'gap-1.5' : 'gap-2'}`}>
-        {focus.map((device) => (
+        {focusItems.map((item) => (
           <span
-            key={device}
+            key={item.key}
             className={`rounded-full border border-fuchsia-400/35 bg-fuchsia-500/70 ${compact ? 'px-2.5 py-1 text-xs' : 'px-3 py-1.5 text-xs md:text-sm'} font-black uppercase tracking-wide text-white`}
           >
-            {device}
+            {item.label}
           </span>
         ))}
       </div>
