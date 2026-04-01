@@ -420,18 +420,22 @@ const ACTIVE_VERB_BANKS = {
   middlePrimary: [
     'ran', 'grabbed', 'pulled', 'pushed', 'jumped', 'shouted', 'rushed', 'climbed', 'slammed', 'snatched',
     'twisted', 'dragged', 'darted', 'kicked', 'sprinted', 'stomped', 'lifted', 'raced', 'slipped', 'dodged',
+    'burst', 'charged', 'lurched', 'lunged', 'skidded', 'tripped', 'scrambled', 'bolted',
   ],
   upperPrimary: [
     'lunged', 'yanked', 'braced', 'gripped', 'scrambled', 'stumbled', 'snapped', 'lurched', 'hustled', 'pressed',
     'jerked', 'heaved', 'edged', 'clutched', 'flung', 'hammered', 'skidded', 'thudded', 'shoved', 'spun',
+    'vaulted', 'tugged', 'charged', 'sidestepped', 'burst', 'hooked', 'shunted', 'ripped',
   ],
   lowerSecondary: [
     'surged', 'wrenched', 'pivoted', 'braced', 'lurched', 'slammed', 'snapped', 'drove', 'dragged', 'barreled',
     'scraped', 'lashed', 'thrust', 'stalked', 'hammered', 'crashed', 'veered', 'vaulted', 'forced', 'clawed',
+    'blitzed', 'grappled', 'wove', 'shunted', 'braked', 'rammed', 'staggered', 'flanked',
   ],
   upperSecondary: [
     'recalibrated', 'catapulted', 'intercepted', 'leveraged', 'stabilised', 'fractured', 'accelerated', 'orchestrated', 'extracted', 'dislodged',
     'embedded', 'confronted', 'disrupted', 'navigated', 'outpaced', 'reoriented', 'absorbed', 'unravelled', 'countered', 'reframed',
+    'mitigated', 'triangulated', 'fortified', 'neutralised', 'amplified', 'deployed', 'realigned', 'consolidated',
   ],
 }
 
